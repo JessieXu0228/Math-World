@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>6x6长方形网格</title>
+    <title>5x5长方形网格</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -27,6 +27,18 @@
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .heart {
+            color: #f44336;
+            font-size: 24px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .heart.show {
+            opacity: 1;
         }
         .rectangle:hover {
             opacity: 0.8;
@@ -46,6 +58,20 @@
             font-size: 16px;
             color: #666;
         }
+        .heart-button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        .heart-button:hover {
+            background-color: #f57c00;
+        }
     </style>
 </head>
 <body>
@@ -56,35 +82,69 @@
     </div>
     
     <div class="instructions">
-        <p>单击翻面，双击隐藏</p>
+        <p>单击翻面，双击画❤️</p>
+        <button id="heart-button" class="heart-button">❤️在这里</button>
     </div>
     
     <script>
         // 生成6x6的长方形网格
         const gridContainer = document.getElementById('grid-container');
+        let lastChangedRectangle = null; // 记录最后变色的长方形
         
         for (let i = 0; i < 36; i++) {
             const rectangle = document.createElement('div');
             rectangle.className = 'rectangle';
             
+            // 创建爱心元素
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.textContent = '❤️';
+            rectangle.appendChild(heart);
+            
             // 添加点击事件
             rectangle.addEventListener('click', function() {
                 // 切换长方形的颜色（蓝色/红色）
                 this.classList.toggle('red');
+                // 更新最后变色的长方形
+                lastChangedRectangle = this;
             });
             
             // 添加双击事件
             rectangle.addEventListener('dblclick', function() {
-                // 切换长方形的显示/隐藏
-                if (this.style.opacity === '0') {
-                    this.style.opacity = '1';
-                } else {
-                    this.style.opacity = '0';
-                }
+                // 显示爱心
+                const heart = this.querySelector('.heart');
+                heart.classList.add('show');
+                
+                // 2秒后切换颜色
+                setTimeout(() => {
+                    this.classList.toggle('red');
+                    // 更新最后变色的长方形
+                    lastChangedRectangle = this;
+                    // 隐藏爱心
+                    heart.classList.remove('show');
+                }, 2000);
             });
             
             gridContainer.appendChild(rectangle);
         }
+        
+        // 为按钮添加点击事件
+        document.getElementById('heart-button').addEventListener('click', function() {
+            // 使用最后变色的长方形
+            if (lastChangedRectangle) {
+                // 显示爱心
+                const heart = lastChangedRectangle.querySelector('.heart');
+                heart.classList.add('show');
+                
+                // 切换颜色
+                lastChangedRectangle.classList.toggle('red');
+                
+                // 2秒后隐藏爱心
+                setTimeout(() => {
+                    heart.classList.remove('show');
+                }, 2000);
+            }
+        });
     </script>
 </body>
 </html>
