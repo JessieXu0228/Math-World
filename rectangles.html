@@ -17,8 +17,8 @@
         }
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(5, 100px);
-            grid-template-rows: repeat(5, 50px);
+            grid-template-columns: repeat(6, 100px);
+            grid-template-rows: repeat(6, 50px);
             gap: 10px;
         }
         .rectangle {
@@ -60,10 +60,10 @@
     </div>
     
     <script>
-        // 生成5x5的长方形网格
+        // 生成6x6的长方形网格
         const gridContainer = document.getElementById('grid-container');
         
-        for (let i = 0; i < 25; i++) {
+        for (let i = 0; i < 36; i++) {
             const rectangle = document.createElement('div');
             rectangle.className = 'rectangle';
             
